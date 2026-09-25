@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/** Main hook: NaturalSpawner checks spawn rules before it creates the entity. */
+/** NaturalSpawner and BaseSpawner check spawn rules before creating the entity; deny early here. */
 @Mixin(SpawnPlacements.class)
 public abstract class SpawnPlacementsMixin {
 	@Inject(method = "checkSpawnRules", at = @At("HEAD"), cancellable = true)

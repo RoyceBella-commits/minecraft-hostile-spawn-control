@@ -17,14 +17,16 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Holds every mob's spawn rules and persists them as JSON.
  * Only non-default entries are stored, so an empty/missing file means vanilla behaviour.
+ * Format version 1 (v1.x, natural only) uses the same layout and is read unchanged.
  */
 public final class SpawnRuleStore {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-	private static final int FORMAT_VERSION = 1;
+	private static final int FORMAT_VERSION = 2;
 	private static SpawnRuleStore instance;
 
 	private final Path file;
@@ -54,6 +56,29 @@ public final class SpawnRuleStore {
 		if (rule.isDefault()) {
 			this.rules.remove(mob);
 		}
+	}
+
+	/** Sets one source (or every source when {@code source} is null) for every given mob. */
+	public void setAll(Iterable<Identifier> mobs, @Nullable SpawnSource source, boolean allowed) {
+		for (Identifier mob : mobs) {
+			if (source == null) {
+				this.setMob(mob, allowed);
+			} else {
+				this.set(mob, source, allowed);
+			}
+		}
+	}
+
+	/** Sets every source of one mob. */
+	public void setMob(Identifier mob, boolean allowed) {
+		for (SpawnSource source : SpawnSource.values()) {
+			this.set(mob, source, allowed);
+		}
+	}
+
+	public boolean hasRestriction(Identifier mob) {
+		MobSpawnRule rule = this.rules.get(mob);
+		return rule != null && !rule.isDefault();
 	}
 
 	public synchronized void load() {
