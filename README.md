@@ -1,73 +1,127 @@
-# 敌对生物生成控制（Hostile Spawn Control）v2.0.0
+# Hostile Spawn Control · 敌对生物生成控制
 
-为 Minecraft Java 版中**每一种敌对生物**分别控制**每一种生成方式**：自然生成、刷怪笼、结构生成、事件生成、转换生成、刷怪蛋、命令召唤。
-例如：关闭苦力怕的「自然生成」和「刷怪蛋」，但保留「命令召唤」。所有开关默认开启，不改设置时与原版完全一致。
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.3-62B47A)](https://www.minecraft.net/)
+[![Loader](https://img.shields.io/badge/Loader-Fabric-DBD0B4)](https://fabricmc.net/)
+[![Java](https://img.shields.io/badge/Java-25-ED8B00)](https://adoptium.net/)
+[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/RoyceBella-commits/minecraft-hostile-spawn-control)](https://github.com/RoyceBella-commits/minecraft-hostile-spawn-control/releases/latest)
 
-## 版本记录
+**讨厌苦力怕炸家，但又不想开和平模式？**
+这个 Fabric Mod 让你为**每一种敌对生物**单独决定它能不能出现，还能细分到**它是怎么出现的**：自然刷新、刷怪笼、刷怪蛋、命令……各自独立开关。
 
-```text
-Minecraft: 26.3
-Loader: Fabric Loader 0.19.5
-Java major: 25
-Fabric API: 0.161.0+26.3（必需）
-Other dependencies: 无
-Mod: hostile_spawn_control 2.0.0，hostile_spawn_control-2.0.0.jar
-Side: 两端通用（单人游戏装在客户端即可；专用服务器装在服务端即可，玩家客户端不强制安装）
-Build: Loom 1.17-SNAPSHOT，Gradle 9.6.0，Temurin JDK 25.0.4.1（macOS arm64）
-Tested on: Mac 开发服务端（runServer）自测通过；Windows 客户端界面待实机测试
-```
+> *English:* A Fabric mod that lets you toggle spawning for each hostile mob individually, per spawn source (natural, spawner, structure, event, conversion, spawn egg, command). Defaults to vanilla behaviour.
 
-## 安装
+---
 
-1. 安装适用于 **Minecraft 26.3** 的 **Fabric Loader 0.19.5**（https://fabricmc.net/use/installer/ ）。
-2. 建议为该配置设置独立的游戏目录，例如 `F:\MinecraftInstances\Fabric-26.3-Dev`，先启动一次再退出。
-3. 把以下两个 JAR 放进该游戏目录的 `mods\` 文件夹（**同一个 Mod 只保留一个版本**，升级时删掉旧的 `hostile_spawn_control-1.0.0.jar`）：
-   - `hostile_spawn_control-2.0.0.jar`
-   - `fabric-api-0.161.0+26.3.jar`（[下载](https://modrinth.com/mod/fabric-api)，选择 26.3 对应版本）
-4. 用 Fabric 配置启动游戏。
+## ✨ 功能亮点
 
-从 1.0.0 升级：配置文件格式兼容，原有的「自然生成」设置会保留。
+- **逐个生物控制**：关掉苦力怕，僵尸和骷髅照常出现；难度设置不受影响，困难模式下也能只关某几种。
+- **按生成方式细分**：同一种生物，可以禁止它夜晚自然刷新，却保留刷怪笼和 `/summon`。
+- **只拦新生成，不删已有生物**：在生物“即将生成”时拒绝，而不是生成后再删除。已有的生物、存档里的生物都不会被动到。
+- **默认 = 原版**：装上后什么都不改，游戏行为与原版完全一致。
+- **自动识别敌对生物**：直接从游戏注册表读取，其他 Mod 添加的敌对生物也会自动出现在列表里。
+- **游戏内图形界面 + 命令**：单人按一个键就能改；服务器管理员可以用命令。
 
-## 使用方法
+## 📥 安装
 
-### 游戏内界面（单人游戏）
-按 **K** 打开（可在 选项 → 控制 → 按键绑定 →「敌对生物生成控制」中修改）。
+需要：
 
-```
-┌───────────────────────┬────────────────────────────────────┐
-│ [搜索名称或 ID…]       │ 苦力怕                [本生物全开][本生物全关] │
-│ 🥚 烈焰人              │ minecraft:creeper                   │
-│ 🥚 洞穴蜘蛛            │ 自然生成                     [ 关 ] │
-│ 🥚 苦力怕        受限  │ 刷怪笼                       [ 开 ] │
-│ 🥚 溺尸                │ 结构生成                     [ 开 ] │
-│ ……                    │ 事件生成                     [ 开 ] │
-│                       │ 转换生成                     [ 开 ] │
-│                       │ 刷怪蛋                       [ 关 ] │
-│                       │ 命令召唤                     [ 开 ] │
-├───────────────────────┴────────────────────────────────────┤
-│            [全部开启]   [全部关闭]   [完成]                  │
-└────────────────────────────────────────────────────────────┘
-```
-
-- **左侧**：搜索框支持中文名、英文名、实体 ID（`苦`、`creeper`、`minecraft:creeper`）。列表显示刷怪蛋图标和名称，有任何一项被关闭的生物会标「受限」。
-- **右侧**：当前生物的 7 个生成方式开关，鼠标悬停可查看每项具体包括什么。「本生物全开 / 全关」只改当前生物。
-- **底部**：「全部开启 / 全部关闭」改所有生物的所有生成方式；「完成」保存并退出。
-- 连接别人的服务器时界面为只读，需要服务器管理员使用命令修改。
-
-### 命令（单人需开启作弊；服务器需 OP 2 级）
-| 命令 | 作用 |
+| 组件 | 版本 |
 |---|---|
-| `/spawncontrol set <生物ID> <生成方式> <true\|false>` | 例：`/spawncontrol set minecraft:creeper spawn_egg false` |
-| `/spawncontrol disableall [生成方式]` | 关闭所有敌对生物的某一生成方式；省略则关闭全部生成方式 |
-| `/spawncontrol enableall [生成方式]` | 同上，开启 |
-| `/spawncontrol list` | 列出每种生物被关闭的生成方式 |
-| `/spawncontrol status` | 统计：有限制的生物数，以及每种生成方式的拦截次数 |
-| `/spawncontrol reload` | 手动编辑配置文件后重新加载 |
+| Minecraft Java 版 | 26.3 |
+| [Fabric Loader](https://fabricmc.net/use/installer/) | 0.19.5 或更高 |
+| [Fabric API](https://modrinth.com/mod/fabric-api) | 适用于 26.3 的版本 |
+| Java | 25（官方启动器会自动提供） |
 
-生成方式参数：`natural`、`spawner`、`structure`、`event`、`conversion`、`spawn_egg`、`command`。
+步骤：
 
-### 配置文件
-位置：`<游戏目录>\config\hostile_spawn_control.json`（全局生效，对所有存档有效）。只记录被关闭的项：
+1. 用 [Fabric 安装器](https://fabricmc.net/use/installer/)为 Minecraft 26.3 安装 Fabric Loader。
+2. 从 [Releases](https://github.com/RoyceBella-commits/minecraft-hostile-spawn-control/releases/latest) 下载 `hostile_spawn_control-x.y.z.jar`。
+3. 把它和 Fabric API 一起放进游戏目录的 `mods` 文件夹（Windows 默认是 `%APPDATA%\.minecraft\mods`）。
+4. 在启动器里选择 Fabric 配置启动游戏。
+
+**单人游戏**：装在自己电脑上即可。
+**多人服务器**：只需要装在服务器上，玩家不用安装；想在本地看到中文界面和按键的玩家也可以装。
+
+## 🎮 使用
+
+### 图形界面
+
+进入单人世界后按 **K**（可在 *选项 → 控制 → 按键绑定* 中修改）。
+
+```
+┌───────────────────────┬──────────────────────────────────────────┐
+│ [ 搜索名称或 ID…    ] │ 苦力怕               [本生物全开][本生物全关] │
+│ 🥚 烈焰人             │ minecraft:creeper                          │
+│ 🥚 洞穴蜘蛛           │ 自然生成                          [ 关 ]   │
+│ 🥚 苦力怕       受限  │ 刷怪笼                            [ 开 ]   │
+│ 🥚 溺尸               │ 结构生成                          [ 开 ]   │
+│ 🥚 末影人             │ 事件生成                          [ 开 ]   │
+│ …                     │ 转换生成                          [ 开 ]   │
+│                       │ 刷怪蛋                            [ 关 ]   │
+│                       │ 命令召唤                          [ 开 ]   │
+├───────────────────────┴──────────────────────────────────────────┤
+│               [ 全部开启 ]   [ 全部关闭 ]   [ 完成 ]               │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+- **左边选生物**：支持搜中文名、英文名或 ID（`苦`、`creeper`、`minecraft:creeper` 都行）。有任何限制的生物会标出「受限」。
+- **右边改开关**：鼠标悬停在开关上可以看到这一项具体包括哪些情况。
+- **完成** 时自动保存。
+
+### 命令
+
+需要作弊权限（单人）或 OP 2 级（服务器）。
+
+```mcfunction
+# 禁止苦力怕自然刷新
+/spawncontrol set minecraft:creeper natural false
+
+# 所有敌对生物都不能用刷怪蛋刷出
+/spawncontrol disableall spawn_egg
+
+# 恢复一切为原版
+/spawncontrol enableall
+
+# 查看当前设置 / 拦截统计
+/spawncontrol list
+/spawncontrol status
+```
+
+| 子命令 | 说明 |
+|---|---|
+| `set <生物> <生成方式> <true\|false>` | 设置某种生物的某个生成方式 |
+| `enableall [生成方式]` / `disableall [生成方式]` | 对所有敌对生物批量开 / 关；不写生成方式则作用于全部 |
+| `list` | 列出每种生物被关闭的生成方式 |
+| `status` | 各生成方式的禁用数量与拦截次数 |
+| `reload` | 手动修改配置文件后重新读取 |
+
+生成方式参数：`natural` `spawner` `structure` `event` `conversion` `spawn_egg` `command`
+
+## 📖 各开关到底管什么
+
+| 开关 | 包括 |
+|---|---|
+| **自然生成** `natural` | 夜晚、洞穴、下界、末地、各生物群系的自然刷怪；新区块生成时的刷怪；失眠引来的幻翼；女巫小屋、下界要塞、掠夺者前哨站等结构范围内**持续刷新**的怪 |
+| **刷怪笼** `spawner` | 刷怪笼、试炼刷怪笼 |
+| **结构生成** `structure` | 结构**生成时一次性放置**的生物：女巫小屋的女巫、海底神殿的远古守卫者、林地府邸的卫道士与唤魔者、末地城的潜影贝、海底废墟的溺尸、下界传送门冒出的僵尸猪灵 |
+| **事件生成** `event` | 袭击、灾厄巡逻队、僵尸围城、末影龙复活、搭建凋灵、幽匿尖啸体召唤监守者、寄生 / 渗浆效果、末影珍珠带出的末影螨、骷髅陷阱 |
+| **转换生成** `conversion` | 村民被雷劈成女巫、僵尸溺水成溺尸、骷髅冻成流髑、猪灵在主世界僵尸化等 |
+| **刷怪蛋** `spawn_egg` | 玩家使用刷怪蛋、发射器发射刷怪蛋 |
+| **命令召唤** `command` | `/summon` |
+
+被拦截时会发生什么：
+
+- 刷怪蛋**不会被消耗**；
+- 转换被拦截时，**原来的生物保持原样**（村民还是村民）；
+- 凋灵被拦截时，搭好的灵魂沙和头颅**不会消失**；
+- `/summon` 会提示“无法召唤实体”。
+
+**永远不受影响**：已经存在的生物、区块重新加载的生物、穿越传送门的生物，以及繁殖、骑乘组合、僵尸增援、唤魔者召唤恼鬼等生物自身机制。
+
+## ⚙️ 配置文件
+
+`config/hostile_spawn_control.json`，对所有存档生效，只记录被关掉的项：
 
 ```json
 {
@@ -79,52 +133,52 @@ Tested on: Mac 开发服务端（runServer）自测通过；Windows 客户端界
 }
 ```
 
-删除该文件 = 恢复原版行为。
+删除这个文件就会回到原版行为。游戏运行中手动修改后，执行 `/spawncontrol reload`。
 
-## 各生成方式具体包括什么
+## ❓ 常见问题
 
-| 开关 | 覆盖范围 |
-|---|---|
-| 自然生成 `natural` | 夜晚 / 洞穴 / 下界 / 末地 / 特定生物群系的自然刷怪；区块生成时的刷怪；幻翼；**结构范围内的持续刷新**（女巫小屋持续刷新的女巫、下界要塞的烈焰人与凋灵骷髅、掠夺者前哨站的掠夺者等） |
-| 刷怪笼 `spawner` | 刷怪笼、试炼刷怪笼 |
-| 结构生成 `structure` | **结构生成时一次性放置**的生物：女巫小屋的女巫、海底神殿的远古守卫者、林地府邸的卫道士/唤魔者、末地城的潜影贝、海底废墟的溺尸、下界传送门刷出的僵尸猪灵 |
-| 事件生成 `event` | 袭击、灾厄巡逻队、僵尸围城、末影龙复活、搭建凋灵、幽匿尖啸体召唤监守者、寄生/渗浆药水效果、末影珍珠生成末影螨、骷髅陷阱 |
-| 转换生成 `conversion` | 村民被雷劈变女巫、僵尸溺水变溺尸、骷髅冻成流髑、猪灵/疣猪兽进入主世界僵尸化等。**关闭后原生物保持不变**，不会消失 |
-| 刷怪蛋 `spawn_egg` | 玩家使用刷怪蛋、发射器发射刷怪蛋。**被拦截时刷怪蛋不会被消耗** |
-| 命令召唤 `command` | `/summon`（被拦截时提示“无法召唤实体”） |
+**关掉之后，已经在附近的苦力怕会消失吗？**
+不会。这个 Mod 只阻止新的生成，不删除任何已有生物。
 
-**始终不受影响**（没有开关）：
-- 已经存在的生物、区块重新加载的生物、跨维度传送的生物——开关只影响“新出现”的生物，绝不会删除已有生物
-- 繁殖、用桶放出、骑乘组合（如蜘蛛骑士的骷髅）、僵尸增援、唤魔者召唤恼鬼等生物自身机制
+**和难度设置冲突吗？**
+不冲突，两者独立。和平模式下原版本来就不刷敌对生物；在其他难度下，这个 Mod 在此基础上进一步限制。
 
-## 工作原理
+**我在别人的服务器上按 K 为什么改不了？**
+规则由服务器执行。连接远程服务器时界面只读，需要管理员用 `/spawncontrol` 修改。
 
-- **生物识别**：从实体注册表中自动筛选分类为 `MONSTER` 的实体，不维护固定名单；新版本或其他 Mod 加入的敌对生物会自动出现（26.3 原版识别到 45 种）。
-- **规则模型**：每种生物 × 7 种生成方式，各自一个开关。
-- **拦截方式**：在生成阶段拦截，而不是生成后删除。
-  - `SpawnPlacements.checkSpawnRules`：自然刷怪、刷怪笼在创建实体前的规则检查，直接返回“不可生成”；
-  - `EntityType.create`：所有实体创建的统一入口，按生成原因判断，被禁止时直接不创建实体。原版各调用处都会正确处理“未创建”的情况（刷怪蛋不消耗、转化保留原生物、凋灵结构不消失等）。
+**列表里有末影龙、凋灵、巨人，它们平时也不会刷出来啊？**
+列表是从游戏里自动识别的，凡是被游戏归为“怪物”分类的都会出现。关掉它们对应的开关同样有效，例如关掉凋灵的「事件生成」就无法搭建凋灵。
 
-## Windows 实机测试清单
+**支持其他 Mod 的怪物吗？**
+支持。只要那个 Mod 把生物注册为怪物分类，就会自动出现在列表中。
 
-1. 新建**创造 + 作弊开启**的临时世界，难度困难。
-2. 按 K 打开界面：左侧显示刷怪蛋图标和中文名；搜索「苦」只剩苦力怕；点击生物后右侧显示 7 个开关，悬停有说明。
-3. 关闭苦力怕的「刷怪蛋」：用苦力怕刷怪蛋右键地面，应无法生成且刷怪蛋不减少；左侧苦力怕显示「受限」。
-4. 关闭苦力怕的「命令召唤」：`/summon minecraft:creeper` 提示无法召唤。
-5. 关闭僵尸的「刷怪笼」：放置刷怪笼并设为僵尸（用僵尸刷怪蛋右键刷怪笼），附近等待，不应刷出僵尸。
-6. 关闭女巫的「转换生成」：`/summon minecraft:villager`，再 `/summon minecraft:lightning_bolt ~ ~ ~` 劈中村民，村民应保持为村民（不变女巫）。
-7. 「全部关闭」后，`/time set night` 并切换生存模式，平原上不再刷出新的敌对生物；已有生物不消失。
-8. `/spawncontrol status` 能看到各生成方式的拦截次数。
-9. 点「完成」退出，重进游戏后设置保留；检查 `config\hostile_spawn_control.json`。
-10. 「全部开启」后恢复原版行为。
+**从 1.0.0 升级需要注意什么？**
+删掉旧的 JAR，放入新版本即可，配置文件自动兼容。
 
-出现问题时，请收集该实例的 `logs\latest.log` 和 `crash-reports\` 最新文件。
+## 🛠️ 从源码构建
 
-## 从源码构建（Mac）
+需要 JDK 25。
 
 ```bash
-export JAVA_HOME=$(/usr/libexec/java_home -v 25)
+git clone https://github.com/RoyceBella-commits/minecraft-hostile-spawn-control.git
+cd minecraft-hostile-spawn-control
 ./gradlew build
 ```
 
-产物：`build/libs/hostile_spawn_control-2.0.0.jar`（不要使用 `-sources.jar`）。
+产物在 `build/libs/`，使用不带 `-sources` 后缀的那个 JAR。
+
+<details>
+<summary>实现原理</summary>
+
+- **生物识别**：遍历 `BuiltInRegistries.ENTITY_TYPE`，筛选 `MobCategory.MONSTER`。
+- **规则模型**：`生物 × SpawnSource`，每格一个布尔值，默认允许。
+- **拦截点**（Mixin）：
+  - `SpawnPlacements.checkSpawnRules`：自然刷怪与刷怪笼在创建实体前的规则检查；
+  - `EntityType.create(Level, EntitySpawnRequest)`：所有实体创建的统一入口，按 `EntitySpawnReason` 映射到生成方式，禁止时直接返回 `null`，原版调用方均能正确处理。
+- `LOAD`、`DIMENSION_TRAVEL` 等原因不映射到任何开关，因此已有生物永远不会被拦截。
+
+</details>
+
+## 📄 许可证
+
+[MIT](LICENSE)
