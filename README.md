@@ -17,7 +17,7 @@ Build: Loom 1.17-SNAPSHOT，Gradle 9.6.0，Temurin JDK 25.0.4.1（macOS arm64）
 Tested on: Mac 开发服务端（runServer）自测通过；Windows 客户端界面待实机测试
 ```
 
-## 安装（Windows 本机）
+## 安装
 
 1. 安装适用于 **Minecraft 26.3** 的 **Fabric Loader 0.19.5**（https://fabricmc.net/use/installer/ ）。
 2. 建议为该配置设置独立的游戏目录，例如 `F:\MinecraftInstances\Fabric-26.3-Dev`，先启动一次再退出。
