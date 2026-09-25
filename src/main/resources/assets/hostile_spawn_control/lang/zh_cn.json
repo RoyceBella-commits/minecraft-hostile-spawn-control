@@ -1,0 +1,19 @@
+{
+	"key.category.hostile_spawn_control.main": "敌对生物生成控制",
+	"key.hostile_spawn_control.open": "打开敌对生物生成设置",
+	"hostile_spawn_control.screen.title": "敌对生物生成",
+	"hostile_spawn_control.screen.subtitle": "开 = 保持原版自然生成；关 = 不再自然生成该生物（已有生物、刷怪蛋、/summon、刷怪笼不受影响）",
+	"hostile_spawn_control.screen.read_only": "当前连接的是远程服务器，此处仅显示本地设置。请让管理员使用 /spawncontrol 命令修改。",
+	"hostile_spawn_control.screen.search": "搜索名称或 ID…",
+	"hostile_spawn_control.screen.enable_all": "全部开启",
+	"hostile_spawn_control.screen.disable_all": "全部关闭",
+	"hostile_spawn_control.state.on": "开",
+	"hostile_spawn_control.state.off": "关",
+	"commands.hostile_spawn_control.not_hostile": "%s 不是敌对生物",
+	"commands.hostile_spawn_control.list.header": "敌对生物（共 %s 种）自然生成状态：",
+	"commands.hostile_spawn_control.status": "共 %s 种敌对生物，其中 %s 种已关闭自然生成；本次启动以来已拦截 %s 次生成尝试",
+	"commands.hostile_spawn_control.set": "%s 的自然生成：%s",
+	"commands.hostile_spawn_control.enableall": "已开启全部 %s 种敌对生物的自然生成",
+	"commands.hostile_spawn_control.disableall": "已关闭全部 %s 种敌对生物的自然生成",
+	"commands.hostile_spawn_control.reload": "已从配置文件重新加载生成规则"
+}

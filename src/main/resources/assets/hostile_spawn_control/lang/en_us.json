@@ -1,0 +1,19 @@
+{
+	"key.category.hostile_spawn_control.main": "Hostile Spawn Control",
+	"key.hostile_spawn_control.open": "Open hostile spawn settings",
+	"hostile_spawn_control.screen.title": "Hostile Mob Spawning",
+	"hostile_spawn_control.screen.subtitle": "ON = vanilla natural spawning; OFF = this mob no longer spawns naturally (existing mobs, spawn eggs, /summon and spawners are unaffected)",
+	"hostile_spawn_control.screen.read_only": "Connected to a remote server: showing local settings only. Ask an operator to use /spawncontrol.",
+	"hostile_spawn_control.screen.search": "Search name or ID...",
+	"hostile_spawn_control.screen.enable_all": "Enable All",
+	"hostile_spawn_control.screen.disable_all": "Disable All",
+	"hostile_spawn_control.state.on": "ON",
+	"hostile_spawn_control.state.off": "OFF",
+	"commands.hostile_spawn_control.not_hostile": "%s is not a hostile mob",
+	"commands.hostile_spawn_control.list.header": "Hostile mobs (%s) - natural spawning:",
+	"commands.hostile_spawn_control.status": "%s hostile mobs, %s with natural spawning disabled, %s spawn attempts blocked since start",
+	"commands.hostile_spawn_control.set": "Natural spawning of %s: %s",
+	"commands.hostile_spawn_control.enableall": "Natural spawning enabled for all %s hostile mobs",
+	"commands.hostile_spawn_control.disableall": "Natural spawning disabled for all %s hostile mobs",
+	"commands.hostile_spawn_control.reload": "Spawn rules reloaded from config"
+}

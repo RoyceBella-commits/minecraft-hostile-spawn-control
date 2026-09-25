@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "hostile_spawn_control",
+	"version": "${version}",
+	"name": "Hostile Spawn Control",
+	"description": "为每一种敌对生物提供独立的自然生成开关。Per-mob natural spawn switches for hostile mobs.",
+	"authors": [
+		"royce"
+	],
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.hostilespawncontrol.HostileSpawnControl"
+		],
+		"client": [
+			"com.hostilespawncontrol.client.HostileSpawnControlClient"
+		]
+	},
+	"mixins": [
+		"hostile_spawn_control.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "com.hostilespawncontrol.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"EntityTypeMixin",
+		"SpawnPlacementsMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
